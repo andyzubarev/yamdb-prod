@@ -20,6 +20,18 @@ class User(AbstractUser):
         )
 
 
+class Title(models.Model):
+    pass
+
+
+class Category(models.Model):
+    pass
+
+
+class Genre(models.Model):
+    pass
+
+
 class Review(models.Model):
     SCORE = (
         (1, 'One Star'),
