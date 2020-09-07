@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
 
 
 class UserRole(models.TextChoices):
@@ -39,28 +40,37 @@ class Title(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True
     )
+    rating = models.IntegerField(null=True, blank=True)
 
 
 class Review(models.Model):
-    '''Отзывы пользователей на произведения'''
     title = models.ForeignKey(
-        Title, 
-        on_delete=models.CASCADE, 
-        related_name='reviews'
-        )
-    text = models.TextField()
+        Title,
+        related_name='reviews',
+        verbose_name='Произведение',
+        on_delete=models.CASCADE,
+    )
+    text = models.TextField(verbose_name='Текст отзыва')
     author = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='reviews'
-        )
-    score = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
-        )
+        User,
+        related_name='reviews',
+        on_delete=models.CASCADE,
+        verbose_name='Автор',
+    )
+    score = models.PositiveSmallIntegerField(
+        verbose_name='Оценка', choices=[(r, r) for r in range(1, 11)],
+    )
     pub_date = models.DateTimeField(
-        'review pub date', 
-        auto_now_add=True, 
-        db_index=True)
+        verbose_name='Дата оценки', auto_now_add=True, db_index=True
+    )
+    def __str__(self):
+        return self.text
+        
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.score_avg = Review.objects.filter(title_id=self.title).aggregate(Avg('score'))
+        self.title.rating = self.score_avg['score__avg']
+        self.title.save()
 
 
 class Comment(models.Model):
