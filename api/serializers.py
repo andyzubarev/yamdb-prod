@@ -71,7 +71,7 @@ class TitleSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field='username', read_only=True)
-    title = serializers.ReadOnlyField(source='review.title')
+    title = serializers.IntegerField(source='title_id', required=False)
 
     class Meta:
         model = Review
