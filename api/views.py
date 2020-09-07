@@ -1,7 +1,6 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db import IntegrityError
-from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
@@ -32,7 +31,8 @@ def get_confirmation_code(request):
             User.objects.create_user(username=username, email=email)
         except IntegrityError:
             return Response(
-                {'Error': 'Пользователь с таким username/email уже существует'},
+                {'Error': 'Пользователь с таким '
+                          'username/email уже существует'},
                 status=status.HTTP_400_BAD_REQUEST
                 )
     user = get_object_or_404(User, email=email)
@@ -128,7 +128,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.annotate(rating=Avg('reviews__score'))
+    queryset = Title.objects.all()
     serializer_class = TitleSerializer
     pagination_class = PageNumberPagination
     permission_classes = [IsAdminOrReadOnly]
@@ -148,6 +148,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         title = get_object_or_404(Title, pk=self.kwargs.get('title'))
         serializer.save(author=self.request.user, title=title)
+
+    def get_queryset(self):
+        title_id = self.kwargs.get('title')
+        queryset = get_object_or_404(Title, pk=title_id).reviews
+        return queryset.all()
 
 
 class CommentViewSet(viewsets.ModelViewSet):

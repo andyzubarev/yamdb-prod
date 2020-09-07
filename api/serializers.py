@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from .models import User, Category, Genre, Title, Review, Comment
-from rest_framework.validators import UniqueTogetherValidator
 
 
 class UserEmailSerializer(serializers.Serializer):
@@ -61,11 +60,19 @@ class GenreField(serializers.SlugRelatedField):
 
 
 class TitleSerializer(serializers.ModelSerializer):
-    category = CategoryField(slug_field='slug', queryset=Category.objects.all(), required=False)
-    genre = GenreField(slug_field='slug', queryset=Genre.objects.all(), many=True)
+    category = CategoryField(
+        slug_field='slug',
+        queryset=Category.objects.all(),
+        required=False
+    )
+    genre = GenreField(
+        slug_field='slug',
+        queryset=Genre.objects.all(),
+        many=True
+    )
 
     class Meta:
-        fields = ('id', 'name', 'year', 'description', 'genre', 'category',)
+        fields = '__all__'
         model = Title
 
 
