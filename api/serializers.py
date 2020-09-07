@@ -70,6 +70,7 @@ class TitleSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
     '''Сериализатор модели отзывов'''
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True)
@@ -91,6 +92,10 @@ class ReviewSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                   'One user can make only one review per title.')
         return attrs
+=======
+    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    title = serializers.IntegerField(source='title_id', required=False)
+>>>>>>> 693eea77501ea18e4061218514f5eda6600a1398
 
     class Meta:
         model = Review

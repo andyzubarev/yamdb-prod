@@ -25,6 +25,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.author == request.user
+<<<<<<< HEAD
 
 
 class ReviewCommentPermissions(permissions.BasePermission):
@@ -41,3 +42,5 @@ class ReviewCommentPermissions(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return False
+=======
+>>>>>>> 693eea77501ea18e4061218514f5eda6600a1398
