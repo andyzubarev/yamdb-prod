@@ -1,5 +1,6 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.db.models import Avg
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, Category, Genre, Title, Review, Comment
-from .permissions import IsAdminOrSuperUser, IsAdminOrReadOnly, IsOwnerOrReadOnly
+from .permissions import IsAdminOrSuperUser, IsAdminOrReadOnly, IsOwnerOrReadOnly, ReviewCommentPermissions
 from .serializers import ConfirmationCodeSerializer, UserEmailSerializer, UserSerializer,\
     CategorySerializer, GenreSerializer, TitleSerializer, ReviewSerializer, CommentSerializer
 from .filters import TitlesFilter
@@ -127,7 +128,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.annotate(rating=Avg('reviews__score'))
     serializer_class = TitleSerializer
     pagination_class = PageNumberPagination
     permission_classes = [IsAdminOrReadOnly]
@@ -136,34 +137,28 @@ class TitleViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsAdminOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [ReviewCommentPermissions, IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        title = get_object_or_404(Title, pk=self.kwargs.get('title'))
+        return Review.objects.filter(title=title)
 
     def perform_create(self, serializer):
-        review = get_object_or_404(Review, pk=self.kwargs['id'])
-        serializer.save(
-            author=self.request.user,
-            review=review
-        )
+        title = get_object_or_404(Title, pk=self.kwargs.get('title'))
+        serializer.save(author=self.request.user, title=title)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     pagination_class = PageNumberPagination
-    permission_classes = [IsAdminOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [ReviewCommentPermissions, IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        get_object_or_404(Review, pk=self.kwargs['review_id'])
-        serializer.save(
-            author=self.request.user,
-            review_id=self.kwargs['review_id']
-        )
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        serializer.save(author=self.request.user, review=review)
 
     def get_queryset(self):
-        review_id = self.kwargs['review_id']
-        queryset = get_object_or_404(Review, pk=review_id).comments
-        return queryset
-
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
+        return Comment.objects.filter(review=review)

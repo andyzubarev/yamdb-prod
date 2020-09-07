@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -33,9 +34,6 @@ class Genre(models.Model):
 class Title(models.Model):
     name = models.CharField(max_length=250)
     year = models.PositiveSmallIntegerField(null=True, blank=True)
-    rating = models.DecimalField(
-        max_digits=3, decimal_places=2, null=True, blank=True
-    )
     description = models.CharField(max_length=2000, null=True, blank=True)
     genre = models.ManyToManyField(Genre,)
     category = models.ForeignKey(
@@ -44,39 +42,42 @@ class Title(models.Model):
 
 
 class Review(models.Model):
-    SCORE = (
-        (1, 'One Star'),
-        (2, 'Two Stars'),
-        (3, 'Three Stars'),
-        (4, 'Four Stars'),
-        (5, 'Five Stars'),
-        (6, 'Six Stars'),
-        (7, 'Seven Stars'),
-        (8, 'Eight Stars'),
-        (9, 'Nine Stars'),
-        (10, 'Ten Stars'),
-    )
+    '''Отзывы пользователей на произведения'''
+    title = models.ForeignKey(
+        Title, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+        )
     text = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
-    created = models.DateTimeField('date published', auto_now_add=True)
-    title = models.ForeignKey('Title', on_delete=models.CASCADE, related_name='reviews')
-    score = models.PositiveSmallIntegerField(choices=SCORE)
-
-    class Meta:
-        ordering = ('-created',)
-
-    def __str__(self):
-        return self.text
+    author = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='reviews'
+        )
+    score = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+        )
+    pub_date = models.DateTimeField(
+        'review pub date', 
+        auto_now_add=True, 
+        db_index=True)
 
 
 class Comment(models.Model):
+    '''Комментарии к отзывам'''
+    review = models.ForeignKey(
+        Review, 
+        on_delete=models.CASCADE, 
+        related_name='comments'
+        )
     text = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='comments')
-    created = models.DateTimeField('date published', auto_now_add=True)
-
-    class Meta:
-        ordering = ('-created',)
-
-    def __str__(self):
-        return self.text
+    author = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='comments'
+        )
+    pub_date = models.DateTimeField(
+        'comment pub date', 
+        auto_now_add=True, 
+        db_index=True
+        )

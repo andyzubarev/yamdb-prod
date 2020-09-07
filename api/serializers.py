@@ -65,28 +65,43 @@ class TitleSerializer(serializers.ModelSerializer):
     genre = GenreField(slug_field='slug', queryset=Genre.objects.all(), many=True)
 
     class Meta:
-        fields = ('id', 'name', 'year', 'rating', 'description', 'genre', 'category',)
+        fields = ('id', 'name', 'year', 'description', 'genre', 'category',)
         model = Title
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
-    title = serializers.ReadOnlyField(source='review.title')
+    '''Сериализатор модели отзывов'''
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True)
+
+    def validate(self, attrs):
+        request = self.context['request']
+        if request.method != 'POST':
+            return attrs
+
+        title = Title.objects.filter(
+            pk=self.context['view'].kwargs.get('title')).exists()
+        if not title:
+            return attrs
+
+        title = Title.objects.get(pk=self.context['view'].kwargs.get('title'))
+        review = Review.objects.filter(
+            author=request.user).filter(title=title).exists()
+        if review:
+            raise serializers.ValidationError(
+                  'One user can make only one review per title.')
+        return attrs
 
     class Meta:
         model = Review
-        fields = ('id', 'score', 'text', 'created', 'author', 'title')
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Review.objects.all(),
-                fields=['author', 'title']
-            )
-        ]
+        fields = ('id', 'title_id', 'text', 'author', 'score', 'pub_date')
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    '''Сериализатор модели комментариев'''
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True)
 
     class Meta:
-        fields = ('id', 'author', 'review', 'text', 'created')
         model = Comment
+        fields = ('id', 'review_id', 'text', 'author', 'pub_date')

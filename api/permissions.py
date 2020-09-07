@@ -25,3 +25,19 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.author == request.user
+
+
+class ReviewCommentPermissions(permissions.BasePermission):
+    '''Права доступа для комментариев и отзывов'''
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'POST':
+            return not request.user.is_anonymous()
+
+        if request.method in ('PATCH', 'DELETE'):
+            return (request.user == obj.author or
+                    request.user.role == UserRole.ADMIN or
+                    request.user.role == UserRole.MODERATOR)
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return False
