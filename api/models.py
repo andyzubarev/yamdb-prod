@@ -39,6 +39,11 @@ class Review(models.Model):
         (3, 'Three Stars'),
         (4, 'Four Stars'),
         (5, 'Five Stars'),
+        (6, 'Six Stars'),
+        (7, 'Seven Stars'),
+        (8, 'Eight Stars'),
+        (9, 'Nine Stars'),
+        (10, 'Ten Stars'),
     )
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
