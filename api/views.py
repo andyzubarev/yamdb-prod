@@ -2,6 +2,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
@@ -9,9 +10,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticate
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
-from .permissions import IsAdminOrSuperUser
-from .serializers import ConfirmationCodeSerializer, UserEmailSerializer, UserSerializer
+from .models import User, Category, Genre, Title, Review, Comment
+from .permissions import IsAdminOrSuperUser, IsAdminOrReadOnly, IsOwnerOrReadOnly
+from .serializers import ConfirmationCodeSerializer, UserEmailSerializer, UserSerializer,\
+    CategorySerializer, GenreSerializer, TitleSerializer, ReviewSerializer, CommentSerializer
+from .filters import TitlesFilter
 
 
 @api_view(['POST'])
@@ -89,3 +92,78 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', ]
+    lookup_field = 'slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', ]
+    lookup_field = 'slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class TitleViewSet(viewsets.ModelViewSet):
+    queryset = Title.objects.all()
+    serializer_class = TitleSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = TitlesFilter
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        review = get_object_or_404(Review, pk=self.kwargs['id'])
+        serializer.save(
+            author=self.request.user,
+            review=review
+        )
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly, IsOwnerOrReadOnly]
+
+    def perform_create(self, serializer):
+        get_object_or_404(Review, pk=self.kwargs['review_id'])
+        serializer.save(
+            author=self.request.user,
+            review_id=self.kwargs['review_id']
+        )
+
+    def get_queryset(self):
+        review_id = self.kwargs['review_id']
+        queryset = get_object_or_404(Review, pk=review_id).comments
+        return queryset
+
