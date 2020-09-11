@@ -22,24 +22,33 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, verbose_name='Категория')
     slug = models.SlugField(unique=True)
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, verbose_name='Жанр')
     slug = models.SlugField(unique=True)
 
 
 class Title(models.Model):
-    name = models.CharField(max_length=250)
-    year = models.PositiveSmallIntegerField(null=True, blank=True)
-    description = models.CharField(max_length=2000, null=True, blank=True)
+    name = models.CharField(max_length=250, verbose_name='Название')
+    year = models.PositiveSmallIntegerField(
+        null=True, 
+        blank=True, 
+        verbose_name='Год'
+        )
+    description = models.CharField(
+        max_length=2000, 
+        null=True, 
+        blank=True, 
+        verbose_name='Описание'
+        )
     genre = models.ManyToManyField(Genre,)
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True
     )
-    rating = models.IntegerField(null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True, verbose_name='Рейтинг')
 
 
 class Review(models.Model):
@@ -80,13 +89,15 @@ class Comment(models.Model):
     review = models.ForeignKey(
         Review, 
         on_delete=models.CASCADE, 
-        related_name='comments'
+        related_name='comments', 
+        verbose_name='Отзыв'
         )
-    text = models.TextField()
+    text = models.TextField(verbose_name='Комментарий')
     author = models.ForeignKey(
         User, 
         on_delete=models.CASCADE, 
-        related_name='comments'
+        related_name='comments', 
+        verbose_name='Автор'
         )
     pub_date = models.DateTimeField(
         'comment pub date', 
