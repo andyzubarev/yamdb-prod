@@ -4,7 +4,7 @@ from .models import UserRole
 
 
 class IsAdminOrSuperUser(permissions.BasePermission):
-    '''Права доступа для администратора'''
+    """Права доступа для администратора"""
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
@@ -21,7 +21,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
 
 class ReviewCommentPermissions(permissions.BasePermission):
-    '''Права доступа для комментариев и отзывов'''
+    """Права доступа для комментариев и отзывов"""
     def has_object_permission(self, request, view, obj):
         if request.method == 'POST':
             return not request.user.is_anonymous()

@@ -4,18 +4,18 @@ from django.db.models import Avg
 
 
 class UserRole(models.TextChoices):
-    '''Роли пользователей'''
+    """Роли пользователей"""
     USER = 'user'
     MODERATOR = 'moderator'
     ADMIN = 'admin'
 
 
 class User(AbstractUser):
-    '''Расширение стандартной модели пользователя Django'''
+    """Расширение стандартной модели пользователя Django"""
     bio = models.TextField(blank=True)
     email = models.EmailField(unique=True)
     role = models.CharField(
-        max_length=255, 
+        max_length=255,
         choices=UserRole.choices,
         default=UserRole.USER
         )
@@ -34,14 +34,15 @@ class Genre(models.Model):
 class Title(models.Model):
     name = models.CharField(max_length=250, verbose_name='Название')
     year = models.PositiveSmallIntegerField(
-        null=True, 
-        blank=True, 
+        null=True,
+        blank=True,
+        db_index=True,
         verbose_name='Год'
         )
     description = models.CharField(
-        max_length=2000, 
-        null=True, 
-        blank=True, 
+        max_length=2000,
+        null=True,
+        blank=True,
         verbose_name='Описание'
         )
     genre = models.ManyToManyField(Genre,)
@@ -74,7 +75,7 @@ class Review(models.Model):
 
     def __str__(self):
         return self.text
-        
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.score_avg = Review.objects.filter(title_id=self.title).aggregate(
@@ -85,22 +86,22 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
-    '''Комментарии к отзывам'''
+    """Комментарии к отзывам"""
     review = models.ForeignKey(
-        Review, 
-        on_delete=models.CASCADE, 
-        related_name='comments', 
+        Review,
+        on_delete=models.CASCADE,
+        related_name='comments',
         verbose_name='Отзыв'
         )
     text = models.TextField(verbose_name='Комментарий')
     author = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='comments', 
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
         verbose_name='Автор'
         )
     pub_date = models.DateTimeField(
-        'comment pub date', 
-        auto_now_add=True, 
+        'comment pub date',
+        auto_now_add=True,
         db_index=True
         )

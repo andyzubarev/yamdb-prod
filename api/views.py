@@ -7,24 +7,37 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import (AllowAny, 
-IsAuthenticated, IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .filters import TitlesFilter
 from .models import User, Category, Genre, Title, Review, Comment
-from .permissions import (IsAdminOrSuperUser, 
-IsAdminOrReadOnly, ReviewCommentPermissions)
-from .serializers import (ConfirmationCodeSerializer, UserEmailSerializer, 
-UserSerializer, CategorySerializer, GenreSerializer, TitleSerializer, 
-ReviewSerializer, CommentSerializer)
+from .permissions import (
+    IsAdminOrReadOnly,
+    IsAdminOrSuperUser,
+    ReviewCommentPermissions
+)
+from .serializers import (
+    CategorySerializer,
+    CommentSerializer,
+    ConfirmationCodeSerializer,
+    GenreSerializer,
+    ReviewSerializer,
+    TitleSerializer,
+    UserEmailSerializer,
+    UserSerializer
+)
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_confirmation_code(request):
-    '''API для отправки кода подтверждения на почту'''
+    """API для отправки кода подтверждения на почту"""
     username = request.data.get('username')
     serializer = UserEmailSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -53,7 +66,7 @@ def get_confirmation_code(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_jwt_token(request):
-    '''API для получения jwt-токена'''
+    """API для получения jwt-токена"""
     serializer = ConfirmationCodeSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -63,7 +76,7 @@ def get_jwt_token(request):
     if default_token_generator.check_token(user, confirmation_code):
         refresh = RefreshToken.for_user(user)
         return Response(
-            {'access': str(refresh.access_token)}, 
+            {'access': str(refresh.access_token)},
             status=status.HTTP_200_OK
             )
     return Response(
@@ -73,7 +86,7 @@ def get_jwt_token(request):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    '''API для модели пользователя'''
+    """API для модели пользователя"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = PageNumberPagination
@@ -83,8 +96,8 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get', 'patch'],
             permission_classes=[IsAuthenticated])
     def me(self, request):
-        '''API для получения и редактирования
-        текущим пользователем своих данных'''
+        """API для получения и редактирования
+        текущим пользователем своих данных"""
         user = request.user
         if request.method == 'GET':
             serializer = self.get_serializer(user)

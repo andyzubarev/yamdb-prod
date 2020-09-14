@@ -13,16 +13,16 @@ class ConfirmationCodeSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    '''Сериализатор модели пользователя'''
+    """Сериализатор модели пользователя"""
     class Meta:
         model = User
         fields = (
-            'id', 
-            'username', 
-            'role', 
-            'email', 
-            'first_name', 
-            'last_name', 
+            'id',
+            'username',
+            'role',
+            'email',
+            'first_name',
+            'last_name',
             'bio'
             )
 
@@ -77,7 +77,7 @@ class TitleSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    '''Сериализатор модели отзывов'''
+    """Сериализатор модели отзывов"""
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True)
 
@@ -105,7 +105,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    '''Сериализатор модели комментариев'''
+    """Сериализатор модели комментариев"""
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True)
 
