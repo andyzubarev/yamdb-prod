@@ -1,0 +1,6 @@
+id,password,last_login,is_superuser,username,first_name,last_name,is_stuff,is_active,data_joined,bio,email,role
+100,wrsfsf643,,0,bingobongo,,,0,1,2019-01-05 08:32:05,,bingobongo@yamdb.fake,user
+101,sdg4376df,,0,capt_obvious,,,1,1,2019-01-05 09:35:05,,capt_obvious@yamdb.fake,admin
+102,Bhef894ue,,0,faust,,,0,1,2019-01-05 09:37:05,,faust@yamdb.fake,user
+103,lkUn754h3,,0,reviewer,,,0,1,2019-01-05 12:12:05,,reviewer@yamdb.fake,user
+104,Bhee73jk7,,0,angry,,,0,1,2019-01-05 18:02:05,,angry@yamdb.fake,moderator

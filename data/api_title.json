@@ -1,0 +1,258 @@
+[
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 1,
+        "name": "Побег из Шоушенка",
+        "rating": null,
+        "year": 1994
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 2,
+        "name": "Крестный отец",
+        "rating": 3,
+        "year": 1972
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 3,
+        "name": "12 разгневанных мужчин",
+        "rating": null,
+        "year": 1957
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 4,
+        "name": "Список Шиндлера",
+        "rating": null,
+        "year": 1993
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 5,
+        "name": "Криминальное чтиво",
+        "rating": null,
+        "year": 1994
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 6,
+        "name": "Хороший, плохой, злой",
+        "rating": null,
+        "year": 1966
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 7,
+        "name": "Властелин колец: Братство кольца",
+        "rating": null,
+        "year": 2001
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 8,
+        "name": "Бойцовский клуб",
+        "rating": null,
+        "year": 1999
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 9,
+        "name": "Форрест Гамп",
+        "rating": null,
+        "year": 1994
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 10,
+        "name": "Звёздные войны. Эпизод 5: Империя наносит ответный удар",
+        "rating": null,
+        "year": 1980
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 11,
+        "name": "Властелин колец: Две крепости",
+        "rating": null,
+        "year": 2002
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 12,
+        "name": "Матрица",
+        "rating": null,
+        "year": 1999
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 13,
+        "name": "Пролетая над гнездом кукушки",
+        "rating": null,
+        "year": 1975
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 14,
+        "name": "Назад в будущее",
+        "rating": null,
+        "year": 1985
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 15,
+        "name": "Операция «Ы» и другие приключения Шурика",
+        "rating": null,
+        "year": 1965
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 16,
+        "name": "Карты, деньги, два ствола",
+        "rating": null,
+        "year": 1998
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 17,
+        "name": "Джентльмены удачи",
+        "rating": null,
+        "year": 1971
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 18,
+        "name": "Джанго освобожденный",
+        "rating": null,
+        "year": 2012
+    },
+    {
+        "category_id": 1,
+        "description": null,
+        "id": 19,
+        "name": "Generation П",
+        "rating": null,
+        "year": 2011
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 20,
+        "name": "Колобок",
+        "rating": null,
+        "year": 1873
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 21,
+        "name": "Страх и ненависть в Лас-Вегасе",
+        "rating": null,
+        "year": 1971
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 22,
+        "name": "Война и мир",
+        "rating": null,
+        "year": 1865
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 23,
+        "name": "Улисс",
+        "rating": null,
+        "year": 1918
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 24,
+        "name": "Generation П",
+        "rating": null,
+        "year": 1999
+    },
+    {
+        "category_id": 2,
+        "description": null,
+        "id": 25,
+        "name": "Винни Пух и все-все-все",
+        "rating": null,
+        "year": 1926
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 26,
+        "name": "Стас Михайлов - Позывные на любовь",
+        "rating": null,
+        "year": 2004
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 27,
+        "name": "Led Zeppelin — Stairway to Heaven",
+        "rating": null,
+        "year": 1971
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 28,
+        "name": "Jethro Tull - Aqualung",
+        "rating": null,
+        "year": 1971
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 29,
+        "name": "Elvis Presley - Blue Suede Shoes",
+        "rating": null,
+        "year": 1955
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 30,
+        "name": "Deep Purple — Smoke on the Water",
+        "rating": null,
+        "year": 1971
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 31,
+        "name": "Моцарт - Турецкий марш",
+        "rating": null,
+        "year": 1784
+    },
+    {
+        "category_id": 3,
+        "description": null,
+        "id": 32,
+        "name": "Бах. Оркестровая Сюита №2 си минор",
+        "rating": null,
+        "year": 1739
+    }
+]

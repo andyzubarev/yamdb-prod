@@ -1,0 +1,77 @@
+[
+    {
+        "id": 1,
+        "name": "Драма",
+        "slug": "drama"
+    },
+    {
+        "id": 2,
+        "name": "Комедия",
+        "slug": "comedy"
+    },
+    {
+        "id": 3,
+        "name": "Вестерн",
+        "slug": "western"
+    },
+    {
+        "id": 4,
+        "name": "Фэнтези",
+        "slug": "fantasy"
+    },
+    {
+        "id": 5,
+        "name": "Фантастика",
+        "slug": "sci-fi"
+    },
+    {
+        "id": 6,
+        "name": "Детектив",
+        "slug": "detective"
+    },
+    {
+        "id": 7,
+        "name": "Триллер",
+        "slug": "thriller"
+    },
+    {
+        "id": 8,
+        "name": "Сказка",
+        "slug": "tale"
+    },
+    {
+        "id": 9,
+        "name": "Гонзо",
+        "slug": "gonzo"
+    },
+    {
+        "id": 10,
+        "name": "Роман",
+        "slug": "roman"
+    },
+    {
+        "id": 11,
+        "name": "Баллада",
+        "slug": "ballad"
+    },
+    {
+        "id": 12,
+        "name": "Rock-n-roll",
+        "slug": "rock-n-roll"
+    },
+    {
+        "id": 13,
+        "name": "Классика",
+        "slug": "classical"
+    },
+    {
+        "id": 14,
+        "name": "Рок",
+        "slug": "rock"
+    },
+    {
+        "id": 15,
+        "name": "Шансон",
+        "slug": "chanson"
+    }
+]
