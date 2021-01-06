@@ -16,7 +16,16 @@
 
 **Задача** — написать проект и API так, чтобы они полностью соответствовали документации.
 
-  
+```
+TL;DR
+
+URL for superuser:
+http://<your_server_ip_address>:8000/admin
+
+Login/password for superuser:
+admin
+aDeLiNa3784
+```  
 
 ## Пользовательские роли
 

@@ -6,14 +6,20 @@ LABEL author='praktikum@yandex.ru' version=1 broken_keyboards=5
 # создать директорию /code
 RUN mkdir /code
 
-# скопировать файл requirements.txt из директории, в которой лежит докерфайл, в директорию /code
-COPY requirements.txt /code
-
-# выполнить команду (как в терминале, с тем же синтаксисом) для установки пакетов из requirements.txt
-RUN pip install -r /code/requirements.txt
-
 # скопировать всё содержимое директории, в которой лежит докерфайл, в директорию /code
 COPY . /code
 
+# установить в качестве текущей директорию /code
+WORKDIR /code
+
+# выполнить команду (как в терминале, с тем же синтаксисом) для установки пакетов из requirements.txt
+RUN pip install -r requirements.txt
+
+# выполняем миграции
+RUN python manage.py migrate
+
+# заполняем базу начальными данными
+RUN python manage.py loaddata fixtures
+
 # при старте контейнера выполнить runserver 
-CMD python /code/manage.py runserver 0:8000
+CMD python manage.py runserver 0:8000
