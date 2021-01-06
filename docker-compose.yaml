@@ -1,5 +1,5 @@
 # версия docker-compose
-version: '3.8'
+version: "3.9"
 
 # имя директории для хранения данных
 volumes:
@@ -27,4 +27,4 @@ services:
     depends_on:
       - db
     env_file:
-      - docker-compose up/.env
+      - api_yamdb/.env
