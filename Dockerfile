@@ -16,10 +16,10 @@ WORKDIR /code
 RUN pip install -r requirements.txt
 
 # выполняем миграции
-RUN python manage.py migrate
+# RUN python manage.py migrate
 
 # заполняем базу начальными данными
-RUN python manage.py loaddata fixtures
+# RUN python manage.py loaddata fixtures
 
-# при старте контейнера выполнить runserver 
-CMD python manage.py runserver 0:8000
+# запуск приложения через gunicorn 
+CMD gunicorn api_yamdb.wsgi:application --bind 0.0.0.0:8000
